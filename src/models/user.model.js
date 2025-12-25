@@ -9,5 +9,3 @@ export const users = pgTable('users', {
   created_at: timestamp().defaultNow().notNull(),
   updated_at: timestamp().defaultNow().notNull()
 });
-
-
