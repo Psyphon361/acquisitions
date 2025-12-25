@@ -140,3 +140,12 @@
 {"level":"info","message":"User psyphon10@gmail.com created successfully.","service":"acquisitions-api"}
 {"level":"info","message":"User registered successfully: psyphon10@gmail.com","service":"acquisitions-api"}
 {"level":"info","message":"::1 - - [25/Dec/2025:11:47:14 +0000] \"POST /api/auth/sign-up HTTP/1.1\" 201 119 \"-\" \"HTTPie\"","service":"acquisitions-api"}
+{"level":"info","message":"User psyphon10@gmail.com authenticated successfully.","service":"acquisitions-api"}
+{"level":"info","message":"User signed in successfully: psyphon10@gmail.com","service":"acquisitions-api"}
+{"level":"info","message":"::1 - - [25/Dec/2025:15:58:33 +0000] \"POST /api/auth/sign-in HTTP/1.1\" 200 118 \"-\" \"HTTPie\"","service":"acquisitions-api"}
+{"level":"info","message":"User signed out successfully","service":"acquisitions-api"}
+{"level":"info","message":"::1 - - [25/Dec/2025:15:58:53 +0000] \"POST /api/auth/sign-out HTTP/1.1\" 200 42 \"-\" \"HTTPie\"","service":"acquisitions-api"}
+{"level":"info","message":"User psyphon10@gmail.com authenticated successfully.","service":"acquisitions-api"}
+{"level":"info","message":"User signed in successfully: psyphon10@gmail.com","service":"acquisitions-api"}
+{"level":"info","message":"::1 - - [25/Dec/2025:15:59:00 +0000] \"POST /api/auth/sign-in HTTP/1.1\" 200 118 \"-\" \"HTTPie\"","service":"acquisitions-api"}
+{"level":"info","message":"::1 - - [25/Dec/2025:16:49:05 +0000] \"GET /health HTTP/1.1\" 200 73 \"-\" \"HTTPie\"","service":"acquisitions-api"}
