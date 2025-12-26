@@ -1,0 +1,53 @@
+services:
+  # Neon Local Proxy - Creates ephemeral database branches
+  neon-local:
+    image: neondatabase/neon_local:latest
+    container_name: acquisitions-neon-local
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env.development
+    networks:
+      - app-network
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-h", "localhost", "-p", "5432", "-U", "neon" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # Application Service
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    container_name: acquisitions-app-dev
+    ports:
+      - "${PORT:-3000}:3000"
+    environment:
+      NODE_ENV: development
+      PORT: ${PORT:-3000}
+      LOG_LEVEL: ${LOG_LEVEL:-debug}
+      # Override DATABASE_URL to use Neon Local proxy
+      DATABASE_URL: postgres://neon:npg@neon-local:5432/${DATABASE_NAME:-neondb}?sslmode=require
+    env_file:
+      - .env.development
+    volumes:
+      # Mount source code for hot reloading
+      - ./src:/app/src
+      - ./drizzle:/app/drizzle
+      - ./package.json:/app/package.json
+      - ./drizzle.config.js:/app/drizzle.config.js
+      # Prevent node_modules from being overwritten
+      - /app/node_modules
+    depends_on:
+      neon-local:
+        condition: service_healthy
+    networks:
+      - app-network
+    restart: unless-stopped
+
+networks:
+  app-network:
+    driver: bridge
