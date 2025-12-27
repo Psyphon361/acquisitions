@@ -13,8 +13,7 @@ const aj = arcjet({
       // Block all bots except the following
       allow: [
         'CATEGORY:SEARCH_ENGINE',
-        'CATEGORY:PREVIEW',
-        'CATEGORY:CLIENT_ENGINE',
+        'CATEGORY:PREVIEW'
       ]
     }),
     slidingWindow({
