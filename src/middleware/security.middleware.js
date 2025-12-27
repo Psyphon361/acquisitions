@@ -20,9 +20,13 @@ const securityMiddleware = async (req, res, next) => {
         break;
     }
 
-    const client = aj.withRule(slidingWindow({
-      mode: 'LIVE', interval: '1m', max: limit
-    }));
+    const client = aj.withRule(
+      slidingWindow({
+        mode: 'LIVE',
+        interval: '1m',
+        max: limit,
+      })
+    );
 
     const decision = await client.protect(req);
 
@@ -34,7 +38,10 @@ const securityMiddleware = async (req, res, next) => {
 
     if (decision.isDenied() && decision.reason.isShield()) {
       logger.warn('Shield blocked request', {
-        ip: req.ip, userAgent: req.get('User-Agent'), path: req.path, method: req.method
+        ip: req.ip,
+        userAgent: req.get('User-Agent'),
+        path: req.path,
+        method: req.method,
       });
 
       return res.status(403).json({ error: 'Forbidden', message: 'Request blocked by security policy' });
@@ -42,7 +49,10 @@ const securityMiddleware = async (req, res, next) => {
 
     if (decision.isDenied() && decision.reason.isRateLimit()) {
       logger.warn('Rate Limit Exceeded', {
-        ip: req.ip, userAgent: req.get('User-Agent'), path: req.path, method: req.method
+        ip: req.ip,
+        userAgent: req.get('User-Agent'),
+        path: req.path,
+        method: req.method,
       });
 
       return res.status(403).json({ error: 'Forbidden', message: 'Too many requests' });

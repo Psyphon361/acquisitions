@@ -7,9 +7,11 @@ This directory contains convenience scripts for starting the development environ
 ### Development Scripts
 
 #### `dev.sh` (Bash/Linux/macOS)
+
 Shell script for Unix-based systems (Linux, macOS, WSL).
 
 **Usage:**
+
 ```bash
 chmod +x scripts/dev.sh  # Make executable (first time only)
 ./scripts/dev.sh
@@ -19,9 +21,11 @@ npm run dev:docker
 ```
 
 #### `dev.ps1` (PowerShell/Windows)
+
 PowerShell script for Windows systems.
 
 **Usage:**
+
 ```powershell
 # Run from project root
 .\scripts\dev.ps1
@@ -36,9 +40,11 @@ powershell -ExecutionPolicy Bypass -File .\scripts\dev.ps1
 ### Production Scripts
 
 #### `prod.sh` (Bash/Linux/macOS)
+
 Production deployment script for Unix-based systems.
 
 **Usage:**
+
 ```bash
 chmod +x scripts/prod.sh  # Make executable (first time only)
 ./scripts/prod.sh
@@ -48,9 +54,11 @@ npm run prod:docker
 ```
 
 #### `prod.ps1` (PowerShell/Windows)
+
 Production deployment script for Windows systems.
 
 **Usage:**
+
 ```powershell
 # Run from project root
 .\scripts\prod.ps1
@@ -65,6 +73,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\prod.ps1
 ## What These Scripts Do
 
 ### Development Scripts (`dev.sh` / `dev.ps1`)
+
 1. ✅ Check if `.env.development` exists
 2. ✅ Verify Docker is running
 3. ✅ Create `.neon_local/` directory if needed
@@ -74,6 +83,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\prod.ps1
 7. ✅ Start development containers with Neon Local
 
 ### Production Scripts (`prod.sh` / `prod.ps1`)
+
 1. ✅ Check if `.env.production` exists
 2. ✅ Verify Docker is running
 3. ✅ Build and start production container (detached mode)
@@ -86,21 +96,25 @@ powershell -ExecutionPolicy Bypass -File .\scripts\prod.ps1
 ### PowerShell Execution Policy Error
 
 If you get an error like:
+
 ```
 dev.ps1 cannot be loaded because running scripts is disabled on this system
 ```
 
 **Solution 1 (Temporary):**
+
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\scripts\dev.ps1
 ```
 
 **Solution 2 (Permanent - Current User):**
+
 ```powershell
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
 
 Then run normally:
+
 ```powershell
 .\scripts\dev.ps1
 ```
@@ -108,6 +122,7 @@ Then run normally:
 ### "Command not found" errors
 
 Make sure you're running the script from the project root directory:
+
 ```bash
 # Should be in: D:\acquisitions\
 pwd  # or Get-Location in PowerShell

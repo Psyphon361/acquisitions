@@ -12,7 +12,7 @@ export const signup = async (req, res, next) => {
     if (!validationResult.success) {
       return res.status(400).json({
         error: 'Validation failed',
-        details: formatValidationError(validationResult.error)
+        details: formatValidationError(validationResult.error),
       });
     }
 
@@ -28,9 +28,12 @@ export const signup = async (req, res, next) => {
     res.status(201).json({
       message: 'User registered successfully',
       user: {
-        id: user.id, name: user.name, email: user.email, role: user.role
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
       },
-      token
+      token,
     });
   } catch (e) {
     logger.error('Signup error', e);
@@ -50,7 +53,7 @@ export const signin = async (req, res, next) => {
     if (!validationResult.success) {
       return res.status(400).json({
         error: 'Validation failed',
-        details: formatValidationError(validationResult.error)
+        details: formatValidationError(validationResult.error),
       });
     }
 
@@ -66,9 +69,12 @@ export const signin = async (req, res, next) => {
     res.status(200).json({
       message: 'User signed in successfully',
       user: {
-        id: user.id, name: user.name, email: user.email, role: user.role
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
       },
-      token
+      token,
     });
   } catch (e) {
     logger.error('Signin error', e);
@@ -87,7 +93,7 @@ export const signout = async (req, res, next) => {
 
     logger.info('User signed out successfully');
     res.status(200).json({
-      message: 'User signed out successfully'
+      message: 'User signed out successfully',
     });
   } catch (e) {
     logger.error('Signout error', e);

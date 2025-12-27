@@ -3,6 +3,7 @@
 ## 🚀 Development (Local with Neon Local)
 
 ### First Time Setup
+
 ```bash
 # 1. Copy environment file
 cp .env.development .env.development.local
@@ -14,6 +15,7 @@ cp .env.development .env.development.local
 ```
 
 ### Run Development Environment
+
 ```bash
 # Start everything (app + Neon Local)
 docker compose -f docker-compose.dev.yml up --build
@@ -28,6 +30,7 @@ docker compose -f docker-compose.dev.yml down
 Your app runs at: **http://localhost:3000**
 
 ### Database Operations
+
 ```bash
 # Run migrations
 docker compose -f docker-compose.dev.yml exec app npm run db:migrate
@@ -44,6 +47,7 @@ docker compose -f docker-compose.dev.yml exec app npm run db:generate
 ## 🌐 Production (Neon Cloud)
 
 ### First Time Setup
+
 ```bash
 # 1. Get your Neon Cloud connection string from:
 #    Neon Console → Project → Connection Details
@@ -58,6 +62,7 @@ cp .env.production .env.production.local
 ```
 
 ### Run Production Environment
+
 ```bash
 # Build and start
 docker compose -f docker-compose.prod.yml up --build -d
@@ -76,26 +81,26 @@ docker compose -f docker-compose.prod.yml down
 
 ## 🔧 Common Commands
 
-| Action | Development | Production |
-|--------|-------------|------------|
-| Start | `docker compose -f docker-compose.dev.yml up` | `docker compose -f docker-compose.prod.yml up -d` |
-| Stop | `docker compose -f docker-compose.dev.yml down` | `docker compose -f docker-compose.prod.yml down` |
-| Logs | `docker compose -f docker-compose.dev.yml logs -f` | `docker compose -f docker-compose.prod.yml logs -f` |
-| Shell | `docker compose -f docker-compose.dev.yml exec app sh` | `docker compose -f docker-compose.prod.yml exec app sh` |
-| Rebuild | `docker compose -f docker-compose.dev.yml up --build` | `docker compose -f docker-compose.prod.yml build --no-cache` |
+| Action  | Development                                            | Production                                                   |
+| ------- | ------------------------------------------------------ | ------------------------------------------------------------ |
+| Start   | `docker compose -f docker-compose.dev.yml up`          | `docker compose -f docker-compose.prod.yml up -d`            |
+| Stop    | `docker compose -f docker-compose.dev.yml down`        | `docker compose -f docker-compose.prod.yml down`             |
+| Logs    | `docker compose -f docker-compose.dev.yml logs -f`     | `docker compose -f docker-compose.prod.yml logs -f`          |
+| Shell   | `docker compose -f docker-compose.dev.yml exec app sh` | `docker compose -f docker-compose.prod.yml exec app sh`      |
+| Rebuild | `docker compose -f docker-compose.dev.yml up --build`  | `docker compose -f docker-compose.prod.yml build --no-cache` |
 
 ---
 
 ## 📝 Key Differences
 
-| Feature | Development | Production |
-|---------|-------------|------------|
-| Database | Neon Local (ephemeral branches) | Neon Cloud (persistent) |
-| Hot Reload | ✅ Yes (volume mounts) | ❌ No |
-| Database Branch | Created on start, deleted on stop | Persistent production branch |
-| Connection | `postgres://neon:npg@neon-local:5432/neondb` | Full Neon Cloud URL |
-| SSL Config | Self-signed cert | Production cert |
-| Port | 3000 | 3000 (configurable) |
+| Feature         | Development                                  | Production                   |
+| --------------- | -------------------------------------------- | ---------------------------- |
+| Database        | Neon Local (ephemeral branches)              | Neon Cloud (persistent)      |
+| Hot Reload      | ✅ Yes (volume mounts)                       | ❌ No                        |
+| Database Branch | Created on start, deleted on stop            | Persistent production branch |
+| Connection      | `postgres://neon:npg@neon-local:5432/neondb` | Full Neon Cloud URL          |
+| SSL Config      | Self-signed cert                             | Production cert              |
+| Port            | 3000                                         | 3000 (configurable)          |
 
 ---
 
@@ -111,6 +116,7 @@ docker compose -f docker-compose.prod.yml down
 ## 📚 Full Documentation
 
 See [DOCKER_SETUP.md](./DOCKER_SETUP.md) for complete documentation including:
+
 - Detailed troubleshooting
 - Advanced configuration
 - Production deployment strategies

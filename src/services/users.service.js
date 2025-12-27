@@ -5,30 +5,35 @@ import { eq } from 'drizzle-orm';
 
 export const getAllUsers = async () => {
   try {
-    return await db.select({
-      id: users.id,
-      email: users.email,
-      name: users.name,
-      role: users.role,
-      created_at: users.created_at,
-      updated_at: users.updated_at
-    }).from(users);
+    return await db
+      .select({
+        id: users.id,
+        email: users.email,
+        name: users.name,
+        role: users.role,
+        created_at: users.created_at,
+        updated_at: users.updated_at,
+      })
+      .from(users);
   } catch (e) {
     logger.error('Error getting all users', e);
     throw e;
   }
 };
 
-export const getUserById = async (id) => {
+export const getUserById = async id => {
   try {
-    const result = await db.select({
-      id: users.id,
-      email: users.email,
-      name: users.name,
-      role: users.role,
-      created_at: users.created_at,
-      updated_at: users.updated_at
-    }).from(users).where(eq(users.id, id));
+    const result = await db
+      .select({
+        id: users.id,
+        email: users.email,
+        name: users.name,
+        role: users.role,
+        created_at: users.created_at,
+        updated_at: users.updated_at,
+      })
+      .from(users)
+      .where(eq(users.id, id));
 
     if (result.length === 0) {
       throw new Error('User not found');
@@ -51,20 +56,17 @@ export const updateUser = async (id, updates) => {
 
     const updatedData = {
       ...updates,
-      updated_at: new Date()
+      updated_at: new Date(),
     };
 
-    const result = await db.update(users)
-      .set(updatedData)
-      .where(eq(users.id, id))
-      .returning({
-        id: users.id,
-        email: users.email,
-        name: users.name,
-        role: users.role,
-        created_at: users.created_at,
-        updated_at: users.updated_at
-      });
+    const result = await db.update(users).set(updatedData).where(eq(users.id, id)).returning({
+      id: users.id,
+      email: users.email,
+      name: users.name,
+      role: users.role,
+      created_at: users.created_at,
+      updated_at: users.updated_at,
+    });
 
     return result[0];
   } catch (e) {
@@ -73,7 +75,7 @@ export const updateUser = async (id, updates) => {
   }
 };
 
-export const deleteUser = async (id) => {
+export const deleteUser = async id => {
   try {
     const existingUser = await db.select().from(users).where(eq(users.id, id));
 

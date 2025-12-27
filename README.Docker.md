@@ -4,21 +4,22 @@ This repository includes a complete Docker setup for running the Acquisitions ap
 
 ## 📁 Files Overview
 
-| File | Purpose |
-|------|---------|
-| `Dockerfile` | Multi-stage Docker image for app (dev & prod) |
-| `docker-compose.dev.yml` | Development setup with Neon Local |
-| `docker-compose.prod.yml` | Production setup with Neon Cloud |
-| `.dockerignore` | Excludes unnecessary files from Docker builds |
-| `.env.development` | Development environment template |
-| `.env.production` | Production environment template |
-| `DOCKER_SETUP.md` | Complete setup and troubleshooting guide |
-| `QUICK_START.md` | Quick reference for common commands |
-| `Makefile` | Optional command shortcuts |
+| File                      | Purpose                                       |
+| ------------------------- | --------------------------------------------- |
+| `Dockerfile`              | Multi-stage Docker image for app (dev & prod) |
+| `docker-compose.dev.yml`  | Development setup with Neon Local             |
+| `docker-compose.prod.yml` | Production setup with Neon Cloud              |
+| `.dockerignore`           | Excludes unnecessary files from Docker builds |
+| `.env.development`        | Development environment template              |
+| `.env.production`         | Production environment template               |
+| `DOCKER_SETUP.md`         | Complete setup and troubleshooting guide      |
+| `QUICK_START.md`          | Quick reference for common commands           |
+| `Makefile`                | Optional command shortcuts                    |
 
 ## 🎯 Key Features
 
 ### Development Environment
+
 - ✅ **Neon Local** proxy creates ephemeral database branches
 - ✅ **Hot reload** with volume mounts
 - ✅ **Automatic branch cleanup** when containers stop
@@ -26,6 +27,7 @@ This repository includes a complete Docker setup for running the Acquisitions ap
 - ✅ **Isolated testing** without affecting production data
 
 ### Production Environment
+
 - ✅ **Direct connection** to Neon Cloud database
 - ✅ **Optimized image** with multi-stage builds
 - ✅ **Security hardened** (non-root user, health checks)
@@ -35,6 +37,7 @@ This repository includes a complete Docker setup for running the Acquisitions ap
 ## 🚀 Quick Start
 
 ### Development
+
 ```bash
 # 1. Configure credentials
 cp .env.development .env.development.local
@@ -48,6 +51,7 @@ docker compose -f docker-compose.dev.yml exec app npm run db:migrate
 ```
 
 ### Production
+
 ```bash
 # 1. Configure production database
 cp .env.production .env.production.local
@@ -69,6 +73,7 @@ docker compose -f docker-compose.prod.yml exec app npm run db:migrate
 ## 🔐 Environment Variables
 
 ### Required for Development
+
 ```env
 NEON_API_KEY=your_neon_api_key
 NEON_PROJECT_ID=your_project_id
@@ -76,6 +81,7 @@ PARENT_BRANCH_ID=main
 ```
 
 ### Required for Production
+
 ```env
 DATABASE_URL=postgres://user:pass@host.neon.tech/db?sslmode=require
 JWT_SECRET=your_secure_secret
@@ -84,6 +90,7 @@ JWT_SECRET=your_secure_secret
 ## 🏗️ Architecture
 
 ### Development Flow
+
 ```
 ┌─────────────┐     ┌──────────────┐     ┌─────────────┐
 │   Your App  │────▶│ Neon Local   │────▶│ Neon Cloud  │
@@ -93,6 +100,7 @@ JWT_SECRET=your_secure_secret
 ```
 
 ### Production Flow
+
 ```
 ┌─────────────┐                         ┌─────────────┐
 │   Your App  │────────────────────────▶│ Neon Cloud  │
@@ -113,6 +121,7 @@ JWT_SECRET=your_secure_secret
 ## 📝 Common Tasks
 
 ### View Logs
+
 ```bash
 # Development
 docker compose -f docker-compose.dev.yml logs -f
@@ -122,6 +131,7 @@ docker compose -f docker-compose.prod.yml logs -f
 ```
 
 ### Access Shell
+
 ```bash
 # Development
 docker compose -f docker-compose.dev.yml exec app sh
@@ -131,12 +141,14 @@ docker compose -f docker-compose.prod.yml exec app sh
 ```
 
 ### Run Drizzle Studio
+
 ```bash
 # Development
 docker compose -f docker-compose.dev.yml exec app npm run db:studio
 ```
 
 ### Stop Containers
+
 ```bash
 # Development
 docker compose -f docker-compose.dev.yml down
@@ -155,12 +167,12 @@ docker compose -f docker-compose.prod.yml down
 
 ## 🐛 Troubleshooting
 
-| Issue | Solution |
-|-------|----------|
-| Can't connect to database | Check Neon Local logs: `docker compose -f docker-compose.dev.yml logs neon-local` |
-| Port already in use | Change port in compose file or stop conflicting service |
-| Volume mount not working (Windows) | Enable file sharing in Docker Desktop settings |
-| Ephemeral branch not deleted | Use `docker compose down` (not Ctrl+C) |
+| Issue                              | Solution                                                                          |
+| ---------------------------------- | --------------------------------------------------------------------------------- |
+| Can't connect to database          | Check Neon Local logs: `docker compose -f docker-compose.dev.yml logs neon-local` |
+| Port already in use                | Change port in compose file or stop conflicting service                           |
+| Volume mount not working (Windows) | Enable file sharing in Docker Desktop settings                                    |
+| Ephemeral branch not deleted       | Use `docker compose down` (not Ctrl+C)                                            |
 
 See [DOCKER_SETUP.md](./DOCKER_SETUP.md) for comprehensive troubleshooting.
 
@@ -174,6 +186,7 @@ See [DOCKER_SETUP.md](./DOCKER_SETUP.md) for comprehensive troubleshooting.
 ## 🤝 Contributing
 
 When contributing, please:
+
 1. Test changes in both dev and prod environments
 2. Update documentation if adding new features
 3. Follow existing patterns and conventions

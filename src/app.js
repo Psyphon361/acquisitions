@@ -12,15 +12,17 @@ import usersRoutes from '#routes/users.routes.js';
 const app = express();
 
 app.use(helmet());
-app.use(cors({
-  origin: true, // Allow the requesting origin
-  credentials: true // Allow cookies to be sent
-}));
+app.use(
+  cors({
+    origin: true, // Allow the requesting origin
+    credentials: true, // Allow cookies to be sent
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-app.use(morgan('combined', { stream: { write: (message) => logger.info(message.trim()) } }));
+app.use(morgan('combined', { stream: { write: message => logger.info(message.trim()) } }));
 
 app.use(securityMiddleware);
 

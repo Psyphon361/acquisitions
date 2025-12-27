@@ -5,11 +5,13 @@ This file provides guidance to WARP (warp.dev) when working with code in this re
 ## Tooling and commands
 
 ### Package manager and runtime
+
 - This is a Node.js project using ECMAScript modules (`"type": "module"` in `package.json`).
 - Install dependencies with:
   - `npm install`
 
 ### Application entrypoint and dev server
+
 - Main entrypoint: `src/index.js`, which loads environment variables and starts the HTTP server defined in `src/server.js` / `src/app.js`.
 - Run the development server with automatic reload:
   - `npm run dev`
@@ -19,6 +21,7 @@ This file provides guidance to WARP (warp.dev) when working with code in this re
   - `GET /api` → basic API status message.
 
 ### Linting and formatting
+
 - Run ESLint on the entire project:
   - `npm run lint`
 - Auto-fix lint issues where possible:
@@ -29,6 +32,7 @@ This file provides guidance to WARP (warp.dev) when working with code in this re
   - `npm run format:check`
 
 ### Database and migrations (Drizzle + Neon)
+
 - Drizzle ORM is configured via `drizzle.config.js` to use Neon/PostgreSQL with models under `src/models/*.js`.
 - Environment variable `DATABASE_URL` must be set for DB operations.
 - Common Drizzle CLI commands (all run via npm scripts):
@@ -40,11 +44,14 @@ This file provides guidance to WARP (warp.dev) when working with code in this re
     - `npm run db:studio`
 
 ### Testing
+
 - There is currently **no test script** defined in `package.json` and no `tests/` directory in this repository.
 - `eslint.config.js` is prepared to recognize Jest-style globals for files under `tests/**/*.js`, so if/when tests are added they are expected to be Jest-based and live under `tests/`.
 
 ### Environment configuration
+
 Key environment variables used across the codebase:
+
 - `DATABASE_URL` → required by `drizzle.config.js` and `src/config/database.js` for Neon/Drizzle.
 - `JWT_SECRET` → used in `src/utils/jwt.js` for signing/verifying JWTs (falls back to a hard-coded default; override in real environments).
 - `LOG_LEVEL` → sets minimum log level for Winston in `src/config/logger.js` (defaults to `info`).
@@ -54,7 +61,9 @@ Key environment variables used across the codebase:
 ## High-level architecture
 
 ### Overview
+
 This repository is an Express-based HTTP API with a conventional layered structure:
+
 - **Routing layer** (Express routers) exposes HTTP endpoints.
 - **Controller layer** handles request validation and response shaping.
 - **Service layer** encapsulates business logic and orchestrates persistence.
@@ -62,6 +71,7 @@ This repository is an Express-based HTTP API with a conventional layered structu
 - **Cross-cutting utilities** provide logging, JWT handling, cookies, and validation helpers.
 
 ### Entrypoint and server lifecycle
+
 - `src/index.js`
   - Loads environment variables via `dotenv/config`.
   - Imports and executes `src/server.js`, so starting this module starts the HTTP server.
@@ -70,6 +80,7 @@ This repository is an Express-based HTTP API with a conventional layered structu
   - Binds `app.listen` on `PORT` (env) or `3000` and logs a simple startup message.
 
 ### HTTP app and middleware
+
 - `src/app.js`
   - Creates the Express app and wires core middleware:
     - `helmet` for HTTP security headers.
@@ -85,6 +96,7 @@ This repository is an Express-based HTTP API with a conventional layered structu
     - `/api/auth` → `src/routes/auth.routes.js`.
 
 ### Authentication flow
+
 The authentication feature set (currently focused on sign-up) flows through distinct layers:
 
 - `src/routes/auth.routes.js`
@@ -112,6 +124,7 @@ The authentication feature set (currently focused on sign-up) flows through dist
     - Logs success via the shared Winston logger.
 
 ### Persistence and database access
+
 - `src/config/database.js`
   - Creates a Neon SQL client via `neon(process.env.DATABASE_URL)`.
   - Wraps the SQL client with Drizzle via `drizzle(sql)`.
@@ -125,6 +138,7 @@ The authentication feature set (currently focused on sign-up) flows through dist
   - This schema is the single source of truth for Drizzle migrations (referenced by `drizzle.config.js`).
 
 ### Configuration and logging
+
 - `src/config/logger.js`
   - Configures a Winston logger with:
     - JSON output including timestamps and error stacks.
@@ -135,6 +149,7 @@ The authentication feature set (currently focused on sign-up) flows through dist
   - Exported as the default logger and used across controllers/services/utilities.
 
 ### Validation and utilities
+
 - `src/validations/auth.validation.js`
   - Defines Zod schemas for auth payloads:
     - `signupSchema` with `name`, `email`, `password`, and `role` (`'user' | 'admin'`).
@@ -155,6 +170,7 @@ The authentication feature set (currently focused on sign-up) flows through dist
   - `formatValidationError(errors)` converts Zod error objects into a human-readable string by joining issue messages.
 
 ### Module resolution and aliases
+
 - `package.json` defines custom import maps under `"imports"` to avoid brittle relative paths. Prefer these aliases in new code:
   - `#config/*` → `./src/config/*`
   - `#controllers/*` → `./src/controllers/*`
@@ -166,6 +182,7 @@ The authentication feature set (currently focused on sign-up) flows through dist
   - `#validations/*` → `./src/validations/*`
 
 ### Drizzle configuration
+
 - `drizzle.config.js` ties the schema to the Drizzle CLI:
   - `schema: './src/models/*.js'` → Drizzle scans all model files under `src/models`.
   - `out: './drizzle'` → generated SQL migrations and metadata are written under the `drizzle` directory.

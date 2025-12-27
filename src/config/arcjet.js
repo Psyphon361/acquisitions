@@ -11,17 +11,14 @@ const aj = arcjet({
     detectBot({
       mode: 'LIVE', // Blocks requests. Use "DRY_RUN" to log only
       // Block all bots except the following
-      allow: [
-        'CATEGORY:SEARCH_ENGINE',
-        'CATEGORY:PREVIEW'
-      ]
+      allow: ['CATEGORY:SEARCH_ENGINE', 'CATEGORY:PREVIEW'],
     }),
     slidingWindow({
       mode: 'LIVE',
       interval: '2s',
-      max: 50
-    })
-  ]
+      max: 50,
+    }),
+  ],
 });
 
 export default aj;

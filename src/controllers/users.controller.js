@@ -13,7 +13,7 @@ export const fetchAllUsers = async (req, res, next) => {
     res.json({
       message: 'Successfully retrieved all users.',
       users: allUsers,
-      userCount: allUsers.length
+      userCount: allUsers.length,
     });
   } catch (e) {
     logger.error(e);
@@ -28,7 +28,7 @@ export const fetchUserById = async (req, res, next) => {
     if (!validationResult.success) {
       return res.status(400).json({
         error: 'Validation failed',
-        details: formatValidationError(validationResult.error)
+        details: formatValidationError(validationResult.error),
       });
     }
 
@@ -40,7 +40,7 @@ export const fetchUserById = async (req, res, next) => {
 
     res.json({
       message: 'Successfully retrieved user.',
-      user
+      user,
     });
   } catch (e) {
     logger.error(e);
@@ -60,7 +60,7 @@ export const modifyUser = async (req, res, next) => {
     if (!idValidationResult.success) {
       return res.status(400).json({
         error: 'Validation failed',
-        details: formatValidationError(idValidationResult.error)
+        details: formatValidationError(idValidationResult.error),
       });
     }
 
@@ -69,7 +69,7 @@ export const modifyUser = async (req, res, next) => {
     if (!bodyValidationResult.success) {
       return res.status(400).json({
         error: 'Validation failed',
-        details: formatValidationError(bodyValidationResult.error)
+        details: formatValidationError(bodyValidationResult.error),
       });
     }
 
@@ -80,7 +80,7 @@ export const modifyUser = async (req, res, next) => {
     if (req.user.id !== id && req.user.role !== 'admin') {
       return res.status(403).json({
         error: 'Forbidden',
-        message: 'You can only update your own profile'
+        message: 'You can only update your own profile',
       });
     }
 
@@ -88,13 +88,12 @@ export const modifyUser = async (req, res, next) => {
     if (updates.role && req.user.role !== 'admin') {
       return res.status(403).json({
         error: 'Forbidden',
-        message: 'Only admins can change user roles'
+        message: 'Only admins can change user roles',
       });
     }
 
     // Hash password if it's being updated
-    if (updates.password)
-      updates.password = await hashPassword(updates.password);
+    if (updates.password) updates.password = await hashPassword(updates.password);
 
     logger.info(`Updating user with id ${id}...`);
 
@@ -102,7 +101,7 @@ export const modifyUser = async (req, res, next) => {
 
     res.json({
       message: 'Successfully updated user.',
-      user: updatedUser
+      user: updatedUser,
     });
   } catch (e) {
     logger.error(e);
@@ -122,7 +121,7 @@ export const removeUser = async (req, res, next) => {
     if (!validationResult.success) {
       return res.status(400).json({
         error: 'Validation failed',
-        details: formatValidationError(validationResult.error)
+        details: formatValidationError(validationResult.error),
       });
     }
 
@@ -133,7 +132,7 @@ export const removeUser = async (req, res, next) => {
     await deleteUser(id);
 
     res.json({
-      message: 'Successfully deleted user.'
+      message: 'Successfully deleted user.',
     });
   } catch (e) {
     logger.error(e);

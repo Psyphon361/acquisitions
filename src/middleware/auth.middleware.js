@@ -20,13 +20,13 @@ export const authenticate = (req, res, next) => {
       hasCookies: !!req.cookies,
       cookieKeys: Object.keys(req.cookies || {}),
       hasAuthHeader: !!req.headers.authorization,
-      hasToken: !!token
+      hasToken: !!token,
     });
 
     if (!token) {
       return res.status(401).json({
         error: 'Unauthorized',
-        message: 'Authentication required. Provide token via cookie or Authorization header.'
+        message: 'Authentication required. Provide token via cookie or Authorization header.',
       });
     }
 
@@ -38,7 +38,7 @@ export const authenticate = (req, res, next) => {
     logger.error('Authentication error', e);
     return res.status(401).json({
       error: 'Unauthorized',
-      message: 'Invalid or expired token'
+      message: 'Invalid or expired token',
     });
   }
 };
@@ -47,14 +47,14 @@ export const authorize = (...roles) => {
     if (!req.user) {
       return res.status(401).json({
         error: 'Unauthorized',
-        message: 'Authentication required'
+        message: 'Authentication required',
       });
     }
 
     if (!roles.includes(req.user.role)) {
       return res.status(403).json({
         error: 'Forbidden',
-        message: 'Insufficient permissions'
+        message: 'Insufficient permissions',
       });
     }
 

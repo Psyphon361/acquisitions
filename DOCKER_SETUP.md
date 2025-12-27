@@ -22,11 +22,13 @@ This application uses a dual-environment Docker setup:
 ### Architecture
 
 **Development:**
+
 ```
 Your App Container → Neon Local Container → Neon Cloud (ephemeral branch)
 ```
 
 **Production:**
+
 ```
 Your App Container → Neon Cloud (production database)
 ```
@@ -58,6 +60,7 @@ Your App Container → Neon Cloud (production database)
 ### Step 1: Configure Environment
 
 1. Copy the development environment template:
+
    ```bash
    cp .env.development .env.development.local
    ```
@@ -78,11 +81,13 @@ docker compose -f docker-compose.dev.yml --env-file .env.development.local up --
 ```
 
 Or use the shorthand:
+
 ```bash
 docker compose -f docker-compose.dev.yml up --build
 ```
 
 **What happens:**
+
 1. Neon Local container starts and creates an ephemeral database branch
 2. Application container starts and connects to Neon Local
 3. Your app is now running at `http://localhost:3000`
@@ -120,21 +125,24 @@ docker compose -f docker-compose.dev.yml down
 ### Development Tips
 
 #### Hot Reloading
+
 The development setup includes volume mounts for hot reloading. Changes to your source code will automatically restart the Node.js server.
 
 #### Persistent Branches per Git Branch (Optional)
+
 If you want to keep a database branch per Git branch, modify `docker-compose.dev.yml`:
 
 ```yaml
 neon-local:
   environment:
-    DELETE_BRANCH: "false"
+    DELETE_BRANCH: 'false'
   volumes:
     - ./.neon_local/:/tmp/.neon_local
     - ./.git/HEAD:/tmp/.git/HEAD:ro,consistent
 ```
 
 Then add to `.gitignore`:
+
 ```
 .neon_local/
 ```
@@ -158,11 +166,13 @@ docker compose -f docker-compose.dev.yml exec app npm run db:studio
 ### Step 2: Configure Production Environment
 
 1. Create production environment file:
+
    ```bash
    cp .env.production .env.production.local
    ```
 
 2. Edit `.env.production.local`:
+
    ```env
    NODE_ENV=production
    PORT=3000
@@ -217,26 +227,26 @@ docker compose -f docker-compose.prod.yml down
 
 ### Development (.env.development)
 
-| Variable | Description | Required | Default |
-|----------|-------------|----------|---------|
-| `NEON_API_KEY` | Your Neon API key | Yes | - |
-| `NEON_PROJECT_ID` | Your Neon project ID | Yes | - |
-| `PARENT_BRANCH_ID` | Parent branch for ephemeral branches | No | `main` |
-| `DATABASE_NAME` | Database name | No | `neondb` |
-| `PORT` | Application port | No | `3000` |
-| `NODE_ENV` | Node environment | No | `development` |
-| `LOG_LEVEL` | Logging level | No | `debug` |
+| Variable           | Description                          | Required | Default       |
+| ------------------ | ------------------------------------ | -------- | ------------- |
+| `NEON_API_KEY`     | Your Neon API key                    | Yes      | -             |
+| `NEON_PROJECT_ID`  | Your Neon project ID                 | Yes      | -             |
+| `PARENT_BRANCH_ID` | Parent branch for ephemeral branches | No       | `main`        |
+| `DATABASE_NAME`    | Database name                        | No       | `neondb`      |
+| `PORT`             | Application port                     | No       | `3000`        |
+| `NODE_ENV`         | Node environment                     | No       | `development` |
+| `LOG_LEVEL`        | Logging level                        | No       | `debug`       |
 
 ### Production (.env.production)
 
-| Variable | Description | Required | Example |
-|----------|-------------|----------|---------|
-| `DATABASE_URL` | Full Neon Cloud connection string | Yes | `postgres://user:pass@host.neon.tech/db` |
-| `PORT` | Application port | No | `3000` |
-| `NODE_ENV` | Node environment | No | `production` |
-| `LOG_LEVEL` | Logging level | No | `info` |
-| `JWT_SECRET` | JWT signing secret | Yes | - |
-| `CORS_ORIGIN` | CORS allowed origin | Yes | - |
+| Variable       | Description                       | Required | Example                                  |
+| -------------- | --------------------------------- | -------- | ---------------------------------------- |
+| `DATABASE_URL` | Full Neon Cloud connection string | Yes      | `postgres://user:pass@host.neon.tech/db` |
+| `PORT`         | Application port                  | No       | `3000`                                   |
+| `NODE_ENV`     | Node environment                  | No       | `production`                             |
+| `LOG_LEVEL`    | Logging level                     | No       | `info`                                   |
+| `JWT_SECRET`   | JWT signing secret                | Yes      | -                                        |
+| `CORS_ORIGIN`  | CORS allowed origin               | Yes      | -                                        |
 
 ## Database Migrations
 
@@ -276,6 +286,7 @@ docker compose -f docker-compose.prod.yml exec app npm run db:studio
 
 **Solution:**
 Check Neon Local logs:
+
 ```bash
 docker compose -f docker-compose.dev.yml logs neon-local
 ```
@@ -285,13 +296,15 @@ Verify your API key and project ID are correct.
 ### Issue: App can't connect to database
 
 **Development:**
+
 - Ensure Neon Local container is healthy
 - Check connection string uses `neon-local` as hostname (not `localhost`)
 - Verify network connectivity: `docker compose -f docker-compose.dev.yml exec app ping neon-local`
 
 **Production:**
+
 - Verify DATABASE_URL is correct and includes `?sslmode=require`
-- Test connection from container: 
+- Test connection from container:
   ```bash
   docker compose -f docker-compose.prod.yml exec app node -e "console.log(process.env.DATABASE_URL)"
   ```
@@ -300,15 +313,17 @@ Verify your API key and project ID are correct.
 
 **Solution:**
 Change the port mapping in the compose file or stop the conflicting service:
+
 ```yaml
 ports:
-  - "3001:3000"  # Use port 3001 instead
+  - '3001:3000' # Use port 3001 instead
 ```
 
 ### Issue: Volume mount not working on Windows
 
 **Solution:**
 Ensure Docker Desktop has access to your drive:
+
 - Docker Desktop → Settings → Resources → File Sharing
 - Add your project directory
 
@@ -322,8 +337,8 @@ import pg from 'pg';
 const pool = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
-    rejectUnauthorized: false  // For development with Neon Local
-  }
+    rejectUnauthorized: false, // For development with Neon Local
+  },
 });
 ```
 
@@ -331,6 +346,7 @@ const pool = new pg.Pool({
 
 **Solution:**
 Ensure `DELETE_BRANCH: "true"` in docker-compose.dev.yml and stop containers gracefully:
+
 ```bash
 docker compose -f docker-compose.dev.yml down
 ```
@@ -394,6 +410,7 @@ For actual production deployments, consider:
 ## Support
 
 For issues specific to:
+
 - **Neon Database**: [Neon Support](https://neon.tech/docs/introduction/support)
 - **Docker**: [Docker Community](https://forums.docker.com/)
 - **Application**: Open an issue in this repository
