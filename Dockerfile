@@ -37,8 +37,11 @@ COPY . .
 # Stage 4: Production dependencies
 FROM base AS production-deps
 
+# Install build dependencies for native modules
+RUN apk add --no-cache python3 make g++
+
 # Install only production dependencies
-RUN npm ci --omit=dev
+RUN npm ci --omit=dev --build-from-source
 
 # Stage 5: Production image
 FROM node:20-alpine AS production
