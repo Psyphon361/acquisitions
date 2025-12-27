@@ -28,7 +28,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ secrets.DOCKER_USERNAME }}/acquisitions-app
+          images: ${{ secrets.DOCKER_USERNAME }}/acquisitions-api
           tags: |
             type=ref,event=branch
             type=sha,prefix={{branch}}-
@@ -44,15 +44,15 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/acquisitions-app:buildcache
-          cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/acquisitions-app:buildcache,mode=max
+          cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/acquisitions-api:buildcache
+          cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/acquisitions-api:buildcache,mode=max
 
       - name: Generate summary
         if: success()
         run: |
           echo "## Docker Image Published" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Image:** \`${{ secrets.DOCKER_USERNAME }}/acquisitions-app\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Image:** \`${{ secrets.DOCKER_USERNAME }}/acquisitions-api\`" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Tags:**" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
