@@ -29,7 +29,8 @@ export const signup = async (req, res, next) => {
       message: 'User registered successfully',
       user: {
         id: user.id, name: user.name, email: user.email, role: user.role
-      }
+      },
+      token
     });
   } catch (e) {
     logger.error('Signup error', e);
@@ -66,7 +67,8 @@ export const signin = async (req, res, next) => {
       message: 'User signed in successfully',
       user: {
         id: user.id, name: user.name, email: user.email, role: user.role
-      }
+      },
+      token
     });
   } catch (e) {
     logger.error('Signin error', e);
